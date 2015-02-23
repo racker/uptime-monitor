@@ -1,2 +1,1 @@
-python-novaclient
-oslo.config>=1.4.0
+rackspace-novaclient
