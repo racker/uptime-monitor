@@ -11,9 +11,9 @@ If the script fails (NOT that the nova call fails) the status is 'FAIL'.
 There is always a metric (int32) recorded named 'api_ok' with one of
 three values:
 
- 1 = nova call succeeded (non-5xx response)
- 0 = nova call failed (5xx response)
--1 = script encountered another error, nova status unknown
+*  1 = nova call succeeded (non-5xx response)
+*  0 = nova call failed (5xx response)
+* -1 = script encountered another error, nova status unknown
 
 In the case of nova call failed (0) there is another metric, the actual
 response code. This is a uint32 value with name 'http_status'.
