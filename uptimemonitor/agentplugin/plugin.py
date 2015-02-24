@@ -2,26 +2,32 @@ from novaclient.openstack.common.apiclient import exceptions
 import novaclient.auth_plugin
 from novaclient import client
 from status import Status
+import argparse
 
-auth_url = 'https://identity.api.rackspacecloud.com/v2.0'
-#auth_url = 'https://staging.identity-internal.api.rackspacecloud.com/v2.0/'
-username = 'inframon'
-password = '<api-key>'
-tenant_name = 'inframon'
-project_id = 'inframon'
-region = 'IAD'
-auth_system = 'rackspace'
+AUTH_SYSTEM = 'rackspace'
+
+def get_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-a", "--auth_url", help="Auth endpoint url")
+    parser.add_argument("-u", "--username", help="Account to use for the test")
+    parser.add_argument("-k", "--api_key", help="API key for the account")
+    parser.add_argument("-t", "--tenant", help="Tenant name")
+    parser.add_argument("-r", "--region", help="The region to test")
+    return parser
 
 if __name__ == '__main__':
+    parser = get_parser()
+    args = parser.parse_args()
+
     try:
-        auth_plugin = novaclient.auth_plugin.load_plugin(auth_system)
-        c = client.Client('1.1', username, password, tenant_name, auth_url,
-                          region_name=region, auth_system=auth_system,
-                          auth_plugin=auth_plugin)
+        auth_plugin = novaclient.auth_plugin.load_plugin(AUTH_SYSTEM)
+        c = client.Client('2', args.username, args.api_key, args.tenant,
+                          args.auth_url, region_name=args.region,
+                          auth_system=AUTH_SYSTEM, auth_plugin=auth_plugin)
         c.flavors.list()
         result = Status()
         result.add_metric('api_ok', 'string', 'true')
-    except exceptions.HTTPError as e:
+    except exceptions.HttpError as e:
         result = Status()
 
         http_status = e.http_status
