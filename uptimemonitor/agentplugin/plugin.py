@@ -26,19 +26,19 @@ if __name__ == '__main__':
                           auth_system=AUTH_SYSTEM, auth_plugin=auth_plugin)
         c.flavors.list()
         result = Status()
-        result.add_metric('api_ok', 'string', 'true')
+        result.add_metric('api_ok', 'int32', 1)
     except exceptions.HttpError as e:
         result = Status()
 
         http_status = e.http_status
         if 500 <= http_status < 600:
-            result.add_metric('api_ok', 'string', 'false')
+            result.add_metric('api_ok', 'int32', 0)
         else:
-            result.add_metric('api_ok', 'string', 'true')
+            result.add_metric('api_ok', 'int32', 1)
 
         result.add_metric('http_status', 'uint32', http_status)
     except:
         result = Status(status='FAIL')
-        result.add_metric('api_ok', 'string', 'unknown')
+        result.add_metric('api_ok', 'int32', -1)
 
     print(result)
