@@ -1,5 +1,5 @@
 import string
-import exceptions as ex
+import uptimemonitor.agentplugin.exceptions as ex
 
 _TYPES = ['int32', 'uint32', 'int64', 'uint64', 'double', 'string']
 _VALID_CHARS = string.ascii_letters + string.digits + ':_.'
