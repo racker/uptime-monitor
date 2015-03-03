@@ -17,6 +17,14 @@ class Status(object):
                 return False
         return True
 
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, value):
+        self._status = value
+
     def add_metric(self, name, metric_type, value):
         if name is None or len(name) < 1 or not self._is_name_valid(name):
             raise ex.InvalidMetricNameError(name=name)
